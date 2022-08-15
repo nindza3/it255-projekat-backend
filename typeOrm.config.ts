@@ -1,6 +1,5 @@
+import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { config } from 'dotenv';
-import { Role } from 'src/roles/role.entity';
 
 export const MysqlDataSource = new DataSource({
   type: 'mysql',
@@ -10,6 +9,7 @@ export const MysqlDataSource = new DataSource({
   password: 'S3cret',
   database: 'projekat-backend',
   entities: ['dist/**/*.entity.js'],
+  //entities: [Role, User],
   synchronize: false,
   migrationsRun: false,
   migrations: ['dist/**/migrations/*.js'],
