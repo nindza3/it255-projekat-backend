@@ -91,4 +91,41 @@ export class UserController {
 
     return users;
   }
+  @ApiHeader({
+    name: 'front-auth',
+    required: true,
+  })
+  @Get(':id')
+  async getUser(
+    @Req() request,
+    @Param('id') userId: number,
+  ): Promise<User | null> {
+    let authId = request.headers['front-auth'];
+    if (authId != userId) {
+      throw new ForbiddenException('User is not owner');
+    }
+    let user = await this.userRepository.find({
+      select: {
+        id: true,
+        name: true,
+        password: true,
+        role: {
+          id: true,
+          roleName: true,
+        },
+        favouriteMovies: true,
+        watchedMovies: true,
+      },
+      relations: {
+        favouriteMovies: true,
+        watchedMovies: true,
+      },
+      where: {
+        id: userId,
+      },
+      take: 1,
+    });
+
+    return user[0];
+  }
 }

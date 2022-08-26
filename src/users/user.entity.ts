@@ -29,15 +29,11 @@ export class User {
   @JoinColumn()
   role: Role;
 
-  @ManyToMany((type) => Movie, (movie) => movie.usersFavourite, {
-    cascade: true,
-  })
+  @ManyToMany((type) => Movie, (movie) => movie.usersFavourite)
   @JoinTable()
   favouriteMovies: Movie[] | null;
 
-  @ManyToMany((type) => Movie, (movie) => movie.usersWatched, {
-    cascade: true,
-  })
+  @ManyToMany((type) => Movie, (movie) => movie.usersWatched)
   @JoinTable()
   watchedMovies: Movie[] | null;
 }

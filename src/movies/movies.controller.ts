@@ -84,7 +84,7 @@ export class MovieController {
       }
     }
 
-    return await this.moviesRepository.delete({});
+    return await this.moviesRepository.delete({ id });
   }
 
   @ApiHeader({
@@ -131,14 +131,15 @@ export class MovieController {
     let movie = await this.moviesRepository.findOneBy({ id });
 
     console.log(user);
+    console.log(movie);
 
     if (user[0].favouriteMovies != null) {
       user[0].favouriteMovies.push(movie);
     } else {
       user[0].favouriteMovies = [movie];
     }
-
-    await this.userRepository.save(user);
+    console.log(user[0]);
+    await this.userRepository.save(user[0]);
   }
 
   @ApiHeader({
@@ -249,6 +250,26 @@ export class MovieController {
     }
 
     await this.userRepository.save(user);
+  }
+
+  @ApiHeader({
+    name: 'front-auth',
+    required: true,
+  })
+  @Get()
+  async getAllMovies(@Req() request): Promise<Movie[]> {
+    let authId = request.headers['front-auth'];
+    console.log(authId);
+    if (authId == null) {
+      throw new ForbiddenException('Auth id is required');
+    } else {
+      let user = await this.userRepository.findOneBy({ id: authId });
+      if (!user) {
+        throw new ForbiddenException('User is not loggedIn');
+      }
+    }
+
+    return this.moviesRepository.find();
   }
 
   @ApiHeader({

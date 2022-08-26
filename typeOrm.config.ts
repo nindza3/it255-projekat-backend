@@ -10,7 +10,7 @@ export const MysqlDataSource = new DataSource({
   database: 'projekat-backend',
   entities: ['dist/**/*.entity.js'],
   //entities: [Role, User],
-  synchronize: false,
+  synchronize: true,
   migrationsRun: false,
   migrations: ['dist/**/migrations/*.js'],
 });

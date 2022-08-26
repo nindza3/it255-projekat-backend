@@ -23,9 +23,9 @@ export class Movie {
   @Column()
   year: number;
 
-  @ManyToMany((type) => User, (user) => user.favouriteMovies)
+  @ManyToMany((type) => User, (user) => user.favouriteMovies, { cascade: true })
   usersFavourite: User[] | null;
 
-  @ManyToMany((type) => User, (user) => user.watchedMovies)
+  @ManyToMany((type) => User, (user) => user.watchedMovies, { cascade: true })
   usersWatched: User[] | null;
 }
